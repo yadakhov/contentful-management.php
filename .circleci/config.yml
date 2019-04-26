@@ -5,7 +5,6 @@ workflows:
   lint_and_test:
     jobs:
       - lint
-      - static_analysis
       - test70
       - test71
       - test72
@@ -22,18 +21,6 @@ jobs:
           command: |
             wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -q -O php-cs-fixer.phar
             composer run lint-syntax
-
-  static_analysis:
-    docker:
-      - image: circleci/php:7.2-cli
-    steps:
-      - checkout
-      - run: { name: "Install dependencies", command: sudo composer self-update && composer install -n --prefer-dist }
-      - run:
-          name: Static analysis
-          command: |
-            wget https://github.com/phpstan/phpstan/releases/download/0.10.3/phpstan.phar -q -O phpstan.phar
-            php phpstan.phar analyse --no-progress --level=max src/
 
   test70:
     docker:
